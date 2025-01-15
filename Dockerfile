@@ -1,7 +1,7 @@
 # ----------------------------------------------
 # ビルド用環境
 # ----------------------------------------------
-FROM golang:1.22-bullseye AS deploy-builder
+FROM golang:1.23-bullseye AS deploy-builder
 
 WORKDIR /app
 
@@ -30,13 +30,13 @@ CMD ["./app"]
 # ----------------------------------------------
 # 開発環境
 # ----------------------------------------------
-FROM golang:1.22-alpine AS dev
+FROM golang:1.23-alpine AS dev
 
 WORKDIR /app
 
-RUN apk update && apk add alpine-sdk jq mysql mysql-client
+RUN apk update && apk add alpine-sdk jq mysql mysql-client binutils-gold
 
-RUN go install github.com/cosmtrek/air@latest \
+RUN go install github.com/air-verse/air@latest \
   && go install github.com/sqldef/sqldef/cmd/mysqldef@latest \
   && go install honnef.co/go/tools/cmd/staticcheck@latest \
   && go install golang.org/x/tools/cmd/goimports@latest \
