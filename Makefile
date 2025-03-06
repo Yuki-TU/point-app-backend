@@ -6,6 +6,14 @@ AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
 IMAGE_TAG=$(git rev-parse HEAD)
 ECR_REGISTRY=${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com
 
+# データベース
+DB_HOST=db
+DB_PORT=3306
+DB_USER=admin
+DB_PASSWORD=password
+DB_NAME=point_app
+DB_TEST_NAME=point_app_test
+
 .PHONY: build
 build: ## Build docker image to deploy
 	docker image build \
@@ -58,7 +66,7 @@ migrate:  ## Execute migration（コンテナ）
 
 .PHONY: seed
 seed: ## データ挿入（コンテナ）
-	mysql ${DB_NAME} -h ${DB_HOST} -u ${DB_USER} -p${DB_PASSWORD} < ./_tools/mysql/seed.sql 
+	mariadb --skip-ssl ${DB_NAME} -h ${DB_HOST} -u ${DB_USER} -p${DB_PASSWORD} < ./_tools/mysql/seed.sql 
 
 model: ## model作成
 	rm -rf ./repository/entities
