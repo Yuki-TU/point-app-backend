@@ -2,4 +2,6 @@
 INSERT IGNORE INTO notification_types
     (`id`, `title`)
 VALUES
-    (1, "ポイント送付のお知らせ");
+    (1, "ポイント送付のお知らせ"),
+    (2, "その他"),
+    (3, "キャンペーン");
