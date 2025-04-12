@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# issue
+## 作成時の注意
+- `\n`は文字列になるので、`echo`で改行をうまく表現すること
+
+## PRテンプレート
+
+バグのissueは [bug.md](mdc:.github/ISSUE_TEMPLATE/bug.md) からテンプレート内容を取得すること
+機能追加のissueは [feature.md](mdc:.github/ISSUE_TEMPLATE/feature.md) からテンプレート内容を取得すること
