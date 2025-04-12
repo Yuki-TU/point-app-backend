@@ -38,3 +38,6 @@ gh pr view --web
 [PULL_REQUEST_TEMPLATE.md](mdc:.github/PULL_REQUEST_TEMPLATE.md) からテンプレート内容を取得すること
 
 - `close #{{issue number}}`はブランチ名の`{{featureなど}}/#{{issue number}}/{{add_apiなど}}`の`issue number`と合わせる
+
+### 修正後PR
+- PR作成後にコミットして、プッシュする際、PRに記載する文言を更新すること
