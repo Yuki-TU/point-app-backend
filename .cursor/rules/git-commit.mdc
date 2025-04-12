@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# コミット
+- `#{{issue number}}: {{概要}}`
+- コミットをする場合は、すべてのファイルではなく、適切な粒度でコミットすること
