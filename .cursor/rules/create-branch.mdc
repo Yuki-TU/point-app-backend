@@ -12,3 +12,10 @@ alwaysApply: true
 　 - `refactor`: 既存機能のリファクタリング
 　 - `hotfix`: ホットフィックス
 - 特に指示がなければ、`feature`をデフォルトにする
+- 基本的には`main`ブランチに移動し、最新の状態にプルしてから新しいブランチを切ること
+
+```sh
+git checkout main
+git pull
+git switch -c {{種類}}/#{{issue number}}/{{概要}}
+```
