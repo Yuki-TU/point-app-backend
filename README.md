@@ -1,80 +1,82 @@
 # point-app-backend
+
 ハッカソン2022で作成するポイントアプリのバックエンドプロジェクト
 
-# 開発手順
+## 開発手順
 
 ```sh
 # 環境手順
-$ git clone https://github.com/hack-31/point-app-backend.git
-$ cd ./point-app-backend
+git clone https://github.com/hack-31/point-app-backend.git
+cd ./point-app-backend
 
 # JWTに必要なキー生成
-$ make create-key
+make create-key
 # ビルド、コンテナ起動
-$ make build-up
+make build-up
 # コンテナの中に入る
-$ make in
+make in
 # マイグレーション適用
-$ make migrate
-$ make seed
+make migrate
+make seed
 # コンテナを抜ける
-$ exit
+exit
 # サーバーログ
-$ make log
+make log
 
 # ２回目位以降
-$ make up
-$ make log
+make up
+make log
 ```
 
 詳しくは、makeコマンドを実行
 
 サーバー起動したら、ホスト側で以下のURLでアクセス可能
 
-- API http://localhost:8081
-- swagger-ui http://localhost:80
-- adminer http://localhost:8082
-- aws http://localhost:4566
+- [API](http://localhost:8081)
+- [swagger-ui](http://localhost:80)
+- [adminer](http://localhost:8082)
+- [aws](http://localhost:4566)
 
 ソースコードを書く際、vscodeを利用しているユーザは、[Dev container](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)を利用して開発することを推奨する。
 コンテナ内のファイルを直接修正でき、[Goの拡張機能](https://github.com/golang/vscode-go)により型補完や保存時フォーマットが使えるようになる。
 
 dev containerでの開発方法
+
 1. vscodeに[Dev container](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)を導入
 2. cmd+shift+pを押し、`>open folder in container`を押し、このプロジェクトを選択
 3. 右下の通知に表示されるGo拡張機能に必要なモジュールをインストールボタンを押し、インストールする
-4. vscode内のターミナルで`$ air`でサーバー起動
+4. vscode内のターミナルで`air`でサーバー起動
 
 今回、ホットリロードを利用しているため、保存のたびにサーバーを再起動する必要はない。
 
-# フォーマッター、リンター
+## フォーマッター、リンター
 
 コンテナ内で以下のコマンドを実行
 
 ```sh
 # フォーマッター
-$ make format
+make format
 # リンター(フォーマッターを事前)
-$ make lint
+make lint
 ```
 
-
-# テスト
+## テスト
 
 テストを実行するのみであれば以下のコマンドで行う
 
 ```sh
-$ maek test
+make test
 ```
 
 より詳細なテストのカバレッジを表示したい場合は以下のコマンドを実行
 
 ```sh
 # ブラウザで表示(ホスト側)
-$ make wc
+make wc
 ```
 
-# DB
+## DB
+
 開発用データベース情報
 
 | 項目             | 値        |
@@ -85,40 +87,43 @@ $ make wc
 | パスワード       | password  |
 | データベース     | point_app |
 
-# マイグレーション
+## マイグレーション
 
-`$ make dry-migrate`でDDLを確認して、`$ make migrate`でマイグレーションする流れとなる
+`make dry-migrate`でDDLを確認して、`make migrate`でマイグレーションする流れとなる
 
 ```sh
 # マイグレーションする際に発光されるDDLを確認(実行はされない)
-$ make dry-migrate
+make dry-migrate
 # マイグレーション適用
-$ maae migrate
+make migrate
 ```
 
-# 初期データ挿入
+## 初期データ挿入
 
 `./_tool/mysql/seed.sql`に初期データを挿入するコマンドを記述
 AWS cloud9の[point-app-dev](https://ap-northeast-1.console.aws.amazon.com/cloud9/home/environments/9e3ee1e0dda0408b80b541ecd88be4da?permissions=owner)で以下のコマンドで挿入
 
 ```sh
-$ make seed
+make seed
 ```
 
-# DIツール
-　DIを行う際には、[google/wire](https://github.com/google/wire)というDIツールを使用します。新しいルーティングを追加したり、既存のルーティングのIFが変更された場合は、それに合わせて更新する必要があります。以下のコマンドで更新できます。
+## DIツール
+
+DIを行う際には、[google/wire](https://github.com/google/wire)というDIツールを使用します。新しいルーティングを追加したり、既存のルーティングのIFが変更された場合は、それに合わせて更新する必要があります。以下のコマンドで更新できます。
 
 ```sh
 # api
-$ make wire
+make wire
 # batch
-$ make wire-b
+make wire-b
 ```
 
-　`router/wire.go`は定義元のファイルであり、`router/wire_gen.go`は生成されたファイルです。実際の利用では、`router/wire_gen.go`が使用されます。
+`router/wire.go`は定義元のファイルであり、`router/wire_gen.go`は生成されたファイルです。実際の利用では、`router/wire_gen.go`が使用されます。
 
-# 各ディレクトリの説明
+## 各ディレクトリの説明
+
 詳しい説明は、各ディレクトリのREADME.mdに些細されているものもあります。
+
 - `/auth`
   - JWT認証におけるトークン作成や検証を行う処理が書かれたパッケージ
 - `/router`
@@ -155,15 +160,14 @@ $ make wire-b
 - `/utils`
   - ユーティリティパッケージ
 
-
-# バッチ
+## バッチ
 
 ```sh
 # バッチアプリの作成
-$ make batch
+make batch
 success! try batch command!
 # batchの実行
-$ batch 
+batch 
 NAME:
    batch - point app batch processing
 
@@ -175,12 +179,12 @@ COMMANDS:
    help, h                    Shows a list of commands or help for one command
 ```
 
-# モック
+## モック
 
 以下の方法で実行。
 
 ```sh
-$ make mock
+make mock
 ```
 
 各インターフェース定義書があるディレクトリに`/_mock`があり、`mock_*.go`というファイルが作成される。
@@ -191,48 +195,50 @@ $ make mock
 以下のコマンドでモックを作成する
 
 ```sh
-$ make moq
+make moq
 ```
 
 各層でモックを作成する。
 モックを追加する際は、`./Makefile`の`go moq`に記載された`moq`コマンドのオプションにIF名を追加する
 
 ```sh
-$ moq -out ./handler/moq_test.go ./handler RegisterUserService [ここにIF名を追加する]
+moq -out ./handler/moq_test.go ./handler RegisterUserService [ここにIF名を追加する]
 ```
 
 今後モックファイルを追加する際は`*_moq_test.go`と命名にすること
 
-# デプロイ
+## デプロイ
+
 GitHub Action, Codepipelineによる自動デプロイになります。mainブランチにマージされると自動でデプロイされます。
 GitHub Actionでは、Docker Imageを作成、ECRに登録を行い、Codepipelineでは、ECRからImageを取得し、ECSにデプロイします。
 
-## 手動デプロイ方法
+### 手動デプロイ方法
+
 AWS cloud9の[point-app-dev](https://ap-northeast-1.console.aws.amazon.com/cloud9/home/environments/9e3ee1e0dda0408b80b541ecd88be4da?permissions=owner)にて以下のコマンド実行
 
 ```sh
-$ pwd
+pwd
 /home/ec2-user/environment/point-app-backend
 # 値の設定
-$ AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
-$ IMAGE_TAG=$(git rev-parse HEAD)
-$ ECR_REGISTRY=${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
+IMAGE_TAG=$(git rev-parse HEAD)
+ECR_REGISTRY=${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com
 # ビルド
-$ docker image build \
+docker image build \
   -t ${ECR_REGISTRY}/point-app-backend:latest \
   -t ${ECR_REGISTRY}/point-app-backend:${IMAGE_TAG}  \
   --target deploy ./ --no-cache
 # ECRログイン
-$ aws ecr --region ap-northeast-1 get-login-password | docker login --username AWS --password-stdin ${ECR_REGISTRY}/point-app-backend
+aws ecr --region ap-northeast-1 get-login-password | docker login --username AWS --password-stdin ${ECR_REGISTRY}/point-app-backend
 # ECR push
-$ docker image push -a ${ECR_REGISTRY}/point-app-backend
+docker image push -a ${ECR_REGISTRY}/point-app-backend
 ```
 
 makeコマンドを利用する場合は、以下の2つでデプロイ可能
 
 ```sh
-$ make build
-$ make push
+make build
+make push
 ```
 
 ECRにデプロイされると、latestタグの更新がトリガーとなり、codepipelineによってECSにデプロイが走ります。
