@@ -5,9 +5,13 @@
 	],
 	"service": "app",
 	"workspaceFolder": "/app",
-	"settings": {},
-	"extensions": [
-		"golang.go",
-		"42crunch.vscode-openapi"
-	]
+	"customizations": {
+		"vscode": {
+			"settings": {},
+			"extensions": [
+				"golang.go",
+				"42crunch.vscode-openapi"
+			]
+		}
+	}
 }
