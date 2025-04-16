@@ -129,7 +129,6 @@ func TestRepository_users_GetAll(t *testing.T) {
 }
 
 func TestRepository_users_GetUserByID(t *testing.T) {
-
 	c := clock.FixedClocker{
 		IsAsia: true,
 	}
