@@ -3,3 +3,4 @@
 .env
 secret.pem
 public.pem
+.secrets
