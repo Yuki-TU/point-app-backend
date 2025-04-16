@@ -19,3 +19,9 @@ git checkout main
 git pull
 git switch -c {{種類}}/#{{issue number}}/{{概要}}
 ```
+
+- ブランチ作る時、issue番号がなければ、聞いて。
+- issue番号を聞いたら、以下のコマンドでissueの内容を確認して。それを元に、ブランチを作成して。
+```
+gh issue view {{issue番号}} | cat
+```

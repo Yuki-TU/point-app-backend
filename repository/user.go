@@ -128,7 +128,6 @@ func (r *Repository) DeleteUserByID(ctx context.Context, db Execer, ID model.Use
 func (r *Repository) UpdatePassword(ctx context.Context, db Execer, email, pass *string) error {
 	sql := `UPDATE users SET password = ? WHERE email = ?`
 
-
 	_, err := db.ExecContext(ctx, sql, pass, email)
 	if err != nil {
 		return errors.Wrap(err, "failed to update password in user repo")
