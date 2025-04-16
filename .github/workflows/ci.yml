@@ -1,6 +1,7 @@
 name: "CI"
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - "**.go"
@@ -17,10 +18,9 @@ jobs:
       uses: actions/checkout@v4
 
     - name: generate secret key in JWT
-      run: | 
+      run: |
         echo "${{ secrets.JWT_SECRET_KEY }}" > ./auth/certificate/secret.pem
         chmod 444 ./auth/certificate/secret.pem
-        
     - name: generate public key in JWT
       run: |
         echo "${{ secrets.JWT_PUBLIC_KEY }}" > ./auth/certificate/public.pem
@@ -29,11 +29,18 @@ jobs:
     - name: golangci-lint
       uses: reviewdog/action-golangci-lint@v2
       with:
+        # GitHub Actions用のトークンを使用してGitHubのAPIにアクセスするための認証情報
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        # golangci-lintの実行オプション - 設定ファイルを指定し、全てのパッケージをチェック
         golangci_lint_flags: "--config=./.golangci.yml ./..."
-        fail_on_error: true
+        # エラーが検出された場合にCIを失敗させる
+        fail_level: error
+        # レビューコメントをPull Requestに直接投稿する形式で結果を報告
         reporter: "github-pr-review"
+        # 警告レベル以上の問題を報告する
         level: warning
+        go_version_file: './go.mod'
+        golangci_lint_version: latest
   test:
     name: "Run test"
     runs-on: ubuntu-latest
@@ -73,10 +80,21 @@ jobs:
     # https://medium.com/@s0k0mata/github-actions-and-go-the-new-cache-feature-in-actions-setup-go-v4-and-what-to-watch-out-for-aeea373ed07d
     - uses: actions/checkout@v4
     - uses: actions/setup-go@v5
+      id: setup-go
       with:
         go-version-file: './go.mod'
+    - name: Cache mysqldef binary
+      id: cache-mysqldef
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cache/go-build
+          ~/go/bin/mysqldef
+        key: ${{ runner.os }}-mysqldef-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-mysqldef-
     - name: go module install
-      if: ${{ steps.setup-go.outputs.cache-hit != 'true' }}
+      if: ${{ steps.cache-mysqldef.outputs.cache-hit != 'true' }}
       run: |
         go install github.com/sqldef/sqldef/cmd/mysqldef@latest
     - name: Migration
@@ -93,3 +111,5 @@ jobs:
     - run: go test ./... -coverprofile=coverage.out
     - name: report coverage
       uses: k1LoW/octocov-action@v1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
