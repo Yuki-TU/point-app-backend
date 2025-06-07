@@ -36,7 +36,7 @@ in: ## アプリケーションのコンテナに入る（ホスト）
 
 .PHONY: up
 up: ## ホットリロード付きでdocker compose upを実行（ホスト）
-	docker compose up -d
+	docker compose up -d app db cache aws
 
 .PHONY: down
 down: ## docker compose downを実行（ホスト）
